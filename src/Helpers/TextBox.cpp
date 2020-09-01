@@ -11,7 +11,7 @@
  * 	-allow text to be written fully or one character at a time
  * 	-allow for size changes (text will need to be rewritten into the box)
  * 	-(optional) make text fill line (increase character spacing) (gonna need my own font for this)
- * 	-allow for centered or square text
+ * 	-allow for flush left, centered or square text
  */
 
 /*
@@ -21,28 +21,41 @@
  * to be performed.
  */
 
-
 //confusing naming due to late changes
-struct TextBlock
-{
+/*
+ * box is the container for the text
+ * text is the string contained in the box
+ * speed is the speed at which text will cascade (0 means text instantly appears)
+ * textStyle will be for flush left, centered or squared text
+ * font is the font used
+ */
+struct TextBlock {
 	sf::RectangleShape box;
 	sf::Text text;
 	short speed;
+	short textStyle;
 	sf::Font font;
 };
 
 void reformatText(TextBlock);
-void setPosition(TextBlock);
+void setPosition(TextBlock, int, int);
+void resize(TextBlock, float, float);
 void changeSpeed(TextBlock, short);
+void instaText(TextBlock);
 short getSpeed(TextBlock);
 
-TextBlock TextBox(sf::Vector2f boxOutline, sf::Text inputText, short inputSpeed, sf::Font inputFont) {
+TextBlock TextBox(sf::Vector2f boxOutline, sf::Text inputText, short inputSpeed,
+		short inputStyle, sf::Font inputFont) {
 
 	TextBlock textBox;
 	textBox.box.setSize(boxOutline);
 	textBox.text.setString(inputText.getString());
 	textBox.speed = inputSpeed;
+	textBox.textStyle = inputStyle;
 	textBox.font = inputFont;
+
+	textBox.box.setOrigin(textBox.box.getSize().x / 2,
+			textBox.box.getSize().y / 2);
 
 	return textBox;
 }
@@ -53,21 +66,29 @@ void reformatText(TextBlock textBox) {
 }
 
 //set the position of the box (will need to reposition and possibly reformat text as well)
-void setPosition (TextBlock textBox){
-
+void setPosition(TextBlock textBox, int x, int y) {
 
 	reformatText(textBox);
 }
 
+//in case a textbox needs to be resized (not sure if will be needed)
+void resize(TextBlock textBox, float x, float y) {
+
+	textBox.box.setOrigin(textBox.box.getSize().x / 2,
+			textBox.box.getSize().y / 2);
+}
+
 //change text cascade speed (probably 3 different speeds)
-void changeSpeed(TextBlock textBox, short speedChange){
+void changeSpeed(TextBlock textBox, short speedChange) {
 	textBox.speed = speedChange;
 }
 
-short getSpeed(TextBlock textBox){
-	return textBox.speed;
+//method to instantly finish writing text in box (ie. to quickly move through dialogue)
+void instaText(TextBlock textBox) {
+
 }
 
-
-
+short getSpeed(TextBlock textBox) {
+	return textBox.speed;
+}
 
