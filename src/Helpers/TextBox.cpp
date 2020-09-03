@@ -11,7 +11,8 @@
  * 	-allow text to be written fully or one character at a time
  * 	-allow for size changes (text will need to be rewritten into the box)
  * 	-(optional) make text fill line (increase character spacing) (gonna need my own font for this)
- * 	-allow for flush left, centered or square text
+ * 	-allow for flush left or square text
+ * 	-currently, box outline is invisible, only text is shown (this class used to position text easily only)
  */
 
 /*
@@ -21,41 +22,45 @@
  * to be performed.
  */
 
+struct TextBlock;
+void reformatText(TextBlock);
+void setPosition(TextBlock, float, float);
+void resize(TextBlock, float, float);
+sf::Text drawText(TextBlock);
+short getSpeed(TextBlock);
+sf::Text getText(TextBlock);
+
 //confusing naming due to late changes
 /*
  * box is the container for the text
  * text is the string contained in the box
  * speed is the speed at which text will cascade (0 means text instantly appears)
- * textStyle will be for flush left, centered or squared text
+ * textStyle will be for flush left or centered text
+ * menuText is for menu text
  * font is the font used
  */
 struct TextBlock {
 	sf::RectangleShape box;
 	sf::Text text;
 	short speed;
-	short textStyle;
-	sf::Font font;
+	bool centered;
+	bool menuText;
 };
 
-void reformatText(TextBlock);
-void setPosition(TextBlock, int, int);
-void resize(TextBlock, float, float);
-void changeSpeed(TextBlock, short);
-void instaText(TextBlock);
-short getSpeed(TextBlock);
-
 TextBlock TextBox(sf::Vector2f boxOutline, sf::Text inputText, short inputSpeed,
-		short inputStyle, sf::Font inputFont) {
+		bool isCentered, bool textIsMenu) {
 
 	TextBlock textBox;
 	textBox.box.setSize(boxOutline);
 	textBox.text.setString(inputText.getString());
 	textBox.speed = inputSpeed;
-	textBox.textStyle = inputStyle;
-	textBox.font = inputFont;
+	textBox.centered = isCentered;
+	textBox.menuText = textIsMenu;
 
 	textBox.box.setOrigin(textBox.box.getSize().x / 2,
 			textBox.box.getSize().y / 2);
+
+	reformatText(textBox);
 
 	return textBox;
 }
@@ -63,32 +68,49 @@ TextBlock TextBox(sf::Vector2f boxOutline, sf::Text inputText, short inputSpeed,
 //reformat the text (done on initialization as well as whenever required)
 void reformatText(TextBlock textBox) {
 
+	sf::Text* text = textBox.text;
+	sf::Rect workArea = textBox.box.getLocalBounds();
+	if(workArea.width < textBox.text.getLocalBounds().width){
+		/*
+		 * TODO
+		 * get text rectangle size, cut it up to the closest (going backwards) space
+		 * replace space with newline, then repeat till leftovers fit as well
+		 * set origin to center of TOP line of text IF CENTERED
+		 * decrease size of font by predetermined value if whole thing is too big
+		 */
+	}
+
 }
 
 //set the position of the box (will need to reposition and possibly reformat text as well)
-void setPosition(TextBlock textBox, int x, int y) {
+void setPosition(TextBlock textBox, float x, float y) {
 
+	textBox.box.setPosition(x, y);
 	reformatText(textBox);
 }
 
 //in case a textbox needs to be resized (not sure if will be needed)
 void resize(TextBlock textBox, float x, float y) {
 
-	textBox.box.setOrigin(textBox.box.getSize().x / 2,
-			textBox.box.getSize().y / 2);
+	textBox.box.setSize(sf::Vector2f(x, y));
+	textBox.box.setOrigin(x / 2, y / 2);
+	reformatText(textBox);
 }
 
-//change text cascade speed (probably 3 different speeds)
-void changeSpeed(TextBlock textBox, short speedChange) {
-	textBox.speed = speedChange;
-}
+//method that will type out the text when called (based on speed)
+sf::Text drawText(TextBlock textBox) {
+	if (textBox.speed == 0) {
+		return getText(textBox);
+	}
 
-//method to instantly finish writing text in box (ie. to quickly move through dialogue)
-void instaText(TextBlock textBox) {
-
+	return textBox.text;
 }
 
 short getSpeed(TextBlock textBox) {
 	return textBox.speed;
+}
+
+sf::Text getText(TextBlock textBox) {
+	return textBox.text;
 }
 
