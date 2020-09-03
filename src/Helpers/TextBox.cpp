@@ -78,7 +78,6 @@ void reformatText(TextBlock textBox) {
 		 * set origin to center of TOP line of text IF CENTERED
 		 * decrease size of font by predetermined value if whole thing is too big
 		 */
-
 	}
 
 }
