@@ -37,5 +37,6 @@ License
 TODO
 
 Acknowledgments
--The SFML team for their easy to use libraries
+-The SFML team for their easy to use library
+-The free-to-use temporary font from Google: Raleway
 
