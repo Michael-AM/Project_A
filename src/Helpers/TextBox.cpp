@@ -1,6 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/System/Vector2.hpp>
 #include <iostream>
+#include "TextBox.h"
 
 /*
  * This class will be used to easily place and reposition groupings
@@ -23,6 +24,7 @@
  */
 
 struct TextBlock;
+TextBlock TextBox(sf::Vector2f, sf::Text, short, bool, bool);
 void reformatText(TextBlock);
 void setPosition(TextBlock, float, float);
 void resize(TextBlock, float, float);
@@ -68,16 +70,35 @@ TextBlock TextBox(sf::Vector2f boxOutline, sf::Text inputText, short inputSpeed,
 //reformat the text (done on initialization as well as whenever required)
 void reformatText(TextBlock textBox) {
 
-	sf::Text* text = textBox.text;
-	sf::Rect workArea = textBox.box.getLocalBounds();
-	if(workArea.width < textBox.text.getLocalBounds().width){
+	sf::Text *text = &textBox.text;
+	textBox.box.getGlobalBounds();
+	sf::FloatRect workArea = textBox.box.getGlobalBounds();
+	unsigned int i = 0, killswitch = 0;
+	const sf::String poop = "\\n";
+	while (workArea.width < text->getLocalBounds().width) {
 		/*
 		 * TODO
-		 * get text rectangle size, cut it up to the closest (going backwards) space
-		 * replace space with newline, then repeat till leftovers fit as well
 		 * set origin to center of TOP line of text IF CENTERED
 		 * decrease size of font by predetermined value if whole thing is too big
 		 */
+
+		unsigned int lastSpace = 0;
+		while (text->getString().getSize() > i
+				&& workArea.contains(text->findCharacterPos(i))) {
+			if ((char) text->getString()[i] == ' ')
+				lastSpace = i;
+			i++;
+		}
+		if (lastSpace != 0){
+			sf::String tmp = text->getString();
+			tmp.replace(lastSpace, 1, "\n");
+			text->setString(tmp);
+		}
+		killswitch++;
+		if(killswitch>10){
+			std::cout << "somethings wrong" <<std::endl;
+			exit(1);
+		}
 	}
 
 }
@@ -98,9 +119,10 @@ void resize(TextBlock textBox, float x, float y) {
 }
 
 //method that will type out the text when called (based on speed)
+//TODO finish
 sf::Text drawText(TextBlock textBox) {
 	if (textBox.speed == 0) {
-		return getText(textBox);
+		return textBox.text;
 	}
 
 	return textBox.text;

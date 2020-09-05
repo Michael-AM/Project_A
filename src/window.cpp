@@ -4,6 +4,7 @@
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/System/Vector2.hpp>
 #include <iostream>
+#include "Helpers/TextBox.h"
 
 void windowStart() {
 	sf::RenderWindow window(sf::VideoMode(1280, 720, 32), "Project A");
@@ -65,6 +66,9 @@ void windowStart() {
 	sf::Sprite yaBoiS;
 	yaBoiS.setTexture(yaBoi, true);
 	yaBoiS.setPosition(0, 0);
+
+	//TEXTBOX TEST PLEASE GOD WORK I BEG YOU
+	TextBlock testBox = TextBox(buttonSize, exitButtonText, (short) 0, false, true);
 
 	while (window.isOpen()) {
 		sf::Event event;
