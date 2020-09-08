@@ -69,6 +69,8 @@ void windowStart() {
 
 	//TEXTBOX TEST PLEASE GOD WORK I BEG YOU
 	TextBlock testBox = TextBox(buttonSize, exitButtonText, (short) 0, false, true);
+	setPosition(testBox, 500, 500);
+	testBox.text.setPosition(500,500);
 
 	while (window.isOpen()) {
 		sf::Event event;
