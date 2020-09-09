@@ -1,10 +1,7 @@
 #include "window.h"
 #include <SFML/Graphics.hpp>
-#include <SFML/Graphics/Texture.hpp>
-#include <SFML/Graphics/Sprite.hpp>
 #include <SFML/System/Vector2.hpp>
 #include <iostream>
-#include "Helpers/TextBox.h"
 
 void windowStart() {
 	sf::RenderWindow window(sf::VideoMode(1280, 720, 32), "Project A");
@@ -43,7 +40,9 @@ void windowStart() {
 	myExitButtonShade.setPosition(window.getSize().x / 2, 400);
 	myExitButtonShade.setFillColor(sf::Color::Black);
 	sf::Text exitButtonText("Exit Game", font, 30);
-	exitButtonText.setPosition(window.getSize().x/2 - 70, 381);
+	exitButtonText.setOrigin(exitButtonText.getLocalBounds().width / 2,
+			exitButtonText.getLocalBounds().height / 2 + 8);
+	exitButtonText.setPosition(window.getSize().x / 2, 400);
 
 	//assets for options button
 	sf::RectangleShape optionsButton(buttonSize);
@@ -55,22 +54,18 @@ void windowStart() {
 	optionsButtonShade.setPosition(window.getSize().x / 2, 500);
 	optionsButtonShade.setFillColor(sf::Color::Black);
 	sf::Text optionsButtonText("Options", font, 30);
-	optionsButtonText.setPosition(window.getSize().x/2 - 50, 481);
+	optionsButtonText.setOrigin(optionsButtonText.getLocalBounds().width / 2,
+			optionsButtonText.getLocalBounds().height / 2 + 6);
+	optionsButtonText.setPosition(window.getSize().x / 2, 500);
 
 	//temp assets for yaboi
 	sf::Texture yaBoi;
 	if (!yaBoi.loadFromFile("Assets/Sprites/yaboi(nobg).png",
-			sf::IntRect(90, 20, 200, 400))) {
+			sf::IntRect(90, 20, 200, 400)))
 		std::cout << "Couldn't load image from file." << std::endl;
-	}
 	sf::Sprite yaBoiS;
 	yaBoiS.setTexture(yaBoi, true);
 	yaBoiS.setPosition(0, 0);
-
-	//TEXTBOX TEST PLEASE GOD WORK I BEG YOU
-	TextBlock testBox = TextBox(buttonSize, exitButtonText, (short) 0, false, true);
-	setPosition(testBox, 500, 500);
-	testBox.text.setPosition(500,500);
 
 	while (window.isOpen()) {
 		sf::Event event;
