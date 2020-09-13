@@ -28,6 +28,7 @@ void windowStart() {
 		exit(1);
 	}
 
+	//MAIN MENU COMPONENTS******************
 	//assets for exit button
 	const sf::Vector2f buttonSize(200, 50);
 	sf::RectangleShape myExitButton(buttonSize);
@@ -66,6 +67,26 @@ void windowStart() {
 	sf::Sprite yaBoiS;
 	yaBoiS.setTexture(yaBoi, true);
 	yaBoiS.setPosition(0, 0);
+
+	//OPTIONS MENU COMPONENTS********************
+	//return to main menu button
+	sf::RectangleShape optionsBackButton(buttonSize);
+	optionsBackButton.setOrigin(buttonSize.x / 2, buttonSize.y / 2);
+	optionsBackButton.setPosition(window.getSize().x / 2,
+			window.getSize().y - 75);
+	optionsBackButton.setFillColor(sf::Color(255, 255, 255, 128));
+	sf::RectangleShape optionsBackButtonShade(buttonShadeSize);
+	optionsBackButtonShade.setOrigin(buttonShadeSize.x / 2,
+			buttonShadeSize.y / 2);
+	optionsBackButtonShade.setPosition(window.getSize().x / 2,
+			window.getSize().y - 75);
+	optionsBackButtonShade.setFillColor(sf::Color::Black);
+	sf::Text optionsBackButtonText("Back", font, 30);
+	optionsBackButtonText.setOrigin(
+			optionsBackButtonText.getLocalBounds().width / 2,
+			optionsBackButtonText.getLocalBounds().height / 2 + 8);
+	optionsBackButtonText.setPosition(window.getSize().x / 2,
+			window.getSize().y - 75);
 
 	while (window.isOpen()) {
 		sf::Event event;
@@ -129,8 +150,32 @@ void windowStart() {
 		}
 ////////////////////////////////////////////////////////////////////////// NEXT WINDOW /////////////////////////////////////////////////////
 		case 1: {
-			std::cout << "BEEG SUCCESS" << std::endl;
-			window.close();
+
+			if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+				sf::Vector2f mousePos = window.mapPixelToCoords(
+						sf::Mouse::getPosition(window));
+
+				while (optionsBackButton.getGlobalBounds().contains(mousePos)) {
+					window.clear();
+					window.draw(optionsBackButton);
+					window.draw(optionsBackButtonShade);
+					window.draw(optionsBackButtonText);
+
+					window.display();
+
+					mousePos = window.mapPixelToCoords(
+							sf::Mouse::getPosition(window));
+					window.pollEvent(event);
+					if (event.type == sf::Event::MouseButtonReleased) {
+						currentWindow = 0;
+						break;
+					}
+				}
+			}
+			window.clear();
+			window.draw(optionsBackButton);
+			window.draw(optionsBackButtonText);
+
 			break;
 		}
 		}
