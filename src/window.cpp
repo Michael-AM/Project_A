@@ -4,7 +4,8 @@
 #include <iostream>
 
 void windowStart() {
-	sf::RenderWindow window(sf::VideoMode(1280, 720, 32), "Project A", sf::Style::Close);
+	std::vector<sf::VideoMode> screenSizes = sf::VideoMode::getFullscreenModes();
+	sf::RenderWindow window(sf::VideoMode(screenSizes[0].width, screenSizes[0].height, 32), "Project A", sf::Style::Fullscreen);
 	window.setFramerateLimit(60);
 
 	/*	Window variables:
@@ -92,19 +93,23 @@ void windowStart() {
 	optionsBackButtonText.setPosition(window.getSize().x -200,
 			window.getSize().y - 100);
 
-	//window mode change bar (MULTIPLE COMPONENTS)
-	sf::RectangleShape windowModeBar(smallerButtonSize);
-	windowModeBar.setOrigin(smallerButtonSize.x/2, smallerButtonSize.y/2);
-	windowModeBar.setPosition(250, 150);
-	windowModeBar.setFillColor(sf::Color(255, 255, 240, 128));
+	//resolution change bar (MULTIPLE COMPONENTS)
+	sf::RectangleShape resolutionBar(smallerButtonSize);
+	resolutionBar.setOrigin(smallerButtonSize.x/2, smallerButtonSize.y/2);
+	resolutionBar.setPosition(250, 150);
+	resolutionBar.setFillColor(sf::Color(255, 255, 240, 128));
 	sf::ConvexShape smallInvertedTriangle(3);
 	smallInvertedTriangle.setPoint(0, sf::Vector2f (0, 0));
 	smallInvertedTriangle.setPoint(1, sf::Vector2f (16, 0));
 	smallInvertedTriangle.setPoint(2, sf::Vector2f (8, 12));
 	smallInvertedTriangle.setPosition(295, 144);
 	smallInvertedTriangle.setFillColor(sf::Color::Black);
-	sf::Text windowModeText("", font, 20);
-
+	sf::Text resolutionText[screenSizes.size()];
+	for(unsigned int i=0; i<screenSizes.size(); i++){
+		resolutionText[i].setString(std::to_string(screenSizes[i].width) + " x " + std::to_string(screenSizes[i].height));
+		resolutionText[i].setFont(font);
+		resolutionText[i].setCharacterSize(20);
+	}
 
 
 	while (window.isOpen()) {
