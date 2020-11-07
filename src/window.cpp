@@ -4,8 +4,11 @@
 #include <iostream>
 
 void windowStart() {
-	std::vector<sf::VideoMode> screenSizes = sf::VideoMode::getFullscreenModes();
-	sf::RenderWindow window(sf::VideoMode(screenSizes[0].width, screenSizes[0].height, 32), "Project A", sf::Style::Fullscreen);
+	std::vector<sf::VideoMode> screenSizes =
+			sf::VideoMode::getFullscreenModes();
+	sf::RenderWindow window(
+			sf::VideoMode(screenSizes[0].width, screenSizes[0].height, 32),
+			"Project A", sf::Style::Fullscreen);
 	window.setFramerateLimit(60);
 
 	/*	Window variables:
@@ -16,7 +19,7 @@ void windowStart() {
 	 *		4: dev testing window (temporary)
 	 *		5: controls window
 	 */
-	int currentWindow = 0;
+	int currentWindow = 0; //SET TO 4 FOR DEV WINDOW
 
 	/*
 	 * NEED TO SET ALL CONSTANTS HERE
@@ -33,7 +36,7 @@ void windowStart() {
 	////////////////////////////////////////////////////////MAIN MENU COMPONENTS******************
 
 	const sf::Vector2f buttonSize(200, 50);
-	const sf::Vector2f smallerButtonSize(130, 30);
+	const sf::Vector2f smallerButtonSize(160, 30);
 	const sf::Vector2f buttonShadeSize(190, 40);
 
 	//assets for exit button
@@ -43,12 +46,14 @@ void windowStart() {
 	myExitButton.setFillColor(sf::Color(255, 255, 255, 128));
 	sf::RectangleShape myExitButtonShade(buttonShadeSize);
 	myExitButtonShade.setOrigin(buttonShadeSize.x / 2, buttonShadeSize.y / 2);
-	myExitButtonShade.setPosition(window.getSize().x / 2,  window.getSize().y - 100);
+	myExitButtonShade.setPosition(window.getSize().x / 2,
+			window.getSize().y - 100);
 	myExitButtonShade.setFillColor(sf::Color::Black);
 	sf::Text exitButtonText("Exit Game", font, 30);
 	exitButtonText.setOrigin(exitButtonText.getLocalBounds().width / 2,
 			exitButtonText.getLocalBounds().height / 2 + 8);
-	exitButtonText.setPosition(window.getSize().x / 2,  window.getSize().y - 100);
+	exitButtonText.setPosition(window.getSize().x / 2,
+			window.getSize().y - 100);
 
 	//assets for options button
 	sf::RectangleShape optionsButton(buttonSize);
@@ -57,12 +62,81 @@ void windowStart() {
 	optionsButton.setFillColor(sf::Color(255, 255, 255, 128));
 	sf::RectangleShape optionsButtonShade(buttonShadeSize);
 	optionsButtonShade.setOrigin(buttonShadeSize.x / 2, buttonShadeSize.y / 2);
-	optionsButtonShade.setPosition(window.getSize().x / 2, window.getSize().y - 190);
+	optionsButtonShade.setPosition(window.getSize().x / 2,
+			window.getSize().y - 190);
 	optionsButtonShade.setFillColor(sf::Color::Black);
 	sf::Text optionsButtonText("Options", font, 30);
 	optionsButtonText.setOrigin(optionsButtonText.getLocalBounds().width / 2,
 			optionsButtonText.getLocalBounds().height / 2 + 6);
-	optionsButtonText.setPosition(window.getSize().x / 2, window.getSize().y - 190);
+	optionsButtonText.setPosition(window.getSize().x / 2,
+			window.getSize().y - 190);
+
+	//assets for dev button
+	sf::RectangleShape devButton(buttonSize);
+	devButton.setOrigin(buttonSize.x / 2, buttonSize.y / 2);
+	devButton.setPosition(window.getSize().x / 2, window.getSize().y - 190);
+	devButton.setFillColor(sf::Color(255, 255, 255, 128));
+	sf::RectangleShape devButtonShade(buttonShadeSize);
+	devButtonShade.setOrigin(buttonShadeSize.x / 2, buttonShadeSize.y / 2);
+	devButtonShade.setPosition(window.getSize().x / 2,
+			window.getSize().y - 190);
+	devButtonShade.setFillColor(sf::Color::Black);
+	sf::Text devButtonText("Fun Room", font, 30);
+	devButtonText.setOrigin(devButtonText.getLocalBounds().width / 2,
+			devButtonText.getLocalBounds().height / 2 + 6);
+	devButtonText.setPosition(window.getSize().x / 4 * 3,
+			window.getSize().y - 190);
+
+	////////////////////////////////////////////////OPTIONS MENU COMPONENTS********************
+	//return to main menu button
+	sf::RectangleShape optionsBackButton(buttonSize);
+	optionsBackButton.setOrigin(buttonSize.x / 2, buttonSize.y / 2);
+	optionsBackButton.setPosition(window.getSize().x - 200,
+			window.getSize().y - 100);
+	optionsBackButton.setFillColor(sf::Color(255, 255, 255, 128));
+	sf::RectangleShape optionsBackButtonShade(buttonShadeSize);
+	optionsBackButtonShade.setOrigin(buttonShadeSize.x - 200,
+			buttonShadeSize.y / 2);
+	optionsBackButtonShade.setPosition(window.getSize().x / 2,
+			window.getSize().y - 100);
+	optionsBackButtonShade.setFillColor(sf::Color::Black);
+	sf::Text optionsBackButtonText("Back", font, 30);
+	optionsBackButtonText.setOrigin(
+			optionsBackButtonText.getLocalBounds().width / 2,
+			optionsBackButtonText.getLocalBounds().height / 2 + 8);
+	optionsBackButtonText.setPosition(window.getSize().x - 200,
+			window.getSize().y - 100);
+
+	//resolution change bar (MULTIPLE COMPONENTS)
+	sf::RectangleShape resolutionBar(smallerButtonSize);
+	resolutionBar.setOrigin(smallerButtonSize.x / 2, smallerButtonSize.y / 2);
+	resolutionBar.setPosition(250, 150);
+	resolutionBar.setFillColor(sf::Color(255, 255, 240, 128));
+	sf::ConvexShape smallInvertedTriangle(3);
+	smallInvertedTriangle.setPoint(0, sf::Vector2f(0, 0));
+	smallInvertedTriangle.setPoint(1, sf::Vector2f(16, 0));
+	smallInvertedTriangle.setPoint(2, sf::Vector2f(8, 12));
+	smallInvertedTriangle.setPosition(305, 144);
+	smallInvertedTriangle.setFillColor(sf::Color::Black);
+	sf::Text resolutionText("Resolution", font, 20);
+	resolutionText.setOrigin(resolutionText.getLocalBounds().width / 2,
+			resolutionText.getLocalBounds().height / 2 + 6);
+	resolutionText.setPosition(250, 120);
+	sf::Text resolutionList[screenSizes.size()];
+	for (unsigned int i = 0; i < screenSizes.size(); i++) {
+		resolutionList[i].setString(
+				std::to_string(screenSizes[i].width) + " x "
+						+ std::to_string(screenSizes[i].height));
+		resolutionList[i].setFont(font);
+		resolutionList[i].setCharacterSize(20);
+	}
+
+	////////////////////////////////////////////////////////DEV WINDOW COMPONENTS******************
+	/*
+	 * Gonna load the map graphics here, but the actual collision will need to be implemented
+	 * in a separate file (check the doc for my project setup)
+	 * gonna work on character movement to start, need to link character graphics to the body in a separate file
+	 */
 
 	//temp assets for yaboi
 	sf::Texture yaBoi;
@@ -73,45 +147,7 @@ void windowStart() {
 	yaBoiS.setTexture(yaBoi, true);
 	yaBoiS.setPosition(25, 25);
 
-	////////////////////////////////////////////////OPTIONS MENU COMPONENTS********************
-	//return to main menu button
-	sf::RectangleShape optionsBackButton(buttonSize);
-	optionsBackButton.setOrigin(buttonSize.x / 2, buttonSize.y / 2);
-	optionsBackButton.setPosition(window.getSize().x -200,
-			window.getSize().y - 100);
-	optionsBackButton.setFillColor(sf::Color(255, 255, 255, 128));
-	sf::RectangleShape optionsBackButtonShade(buttonShadeSize);
-	optionsBackButtonShade.setOrigin(buttonShadeSize.x -200,
-			buttonShadeSize.y / 2);
-	optionsBackButtonShade.setPosition(window.getSize().x / 2,
-			window.getSize().y - 100);
-	optionsBackButtonShade.setFillColor(sf::Color::Black);
-	sf::Text optionsBackButtonText("Back", font, 30);
-	optionsBackButtonText.setOrigin(
-			optionsBackButtonText.getLocalBounds().width / 2,
-			optionsBackButtonText.getLocalBounds().height / 2 + 8);
-	optionsBackButtonText.setPosition(window.getSize().x -200,
-			window.getSize().y - 100);
-
-	//resolution change bar (MULTIPLE COMPONENTS)
-	sf::RectangleShape resolutionBar(smallerButtonSize);
-	resolutionBar.setOrigin(smallerButtonSize.x/2, smallerButtonSize.y/2);
-	resolutionBar.setPosition(250, 150);
-	resolutionBar.setFillColor(sf::Color(255, 255, 240, 128));
-	sf::ConvexShape smallInvertedTriangle(3);
-	smallInvertedTriangle.setPoint(0, sf::Vector2f (0, 0));
-	smallInvertedTriangle.setPoint(1, sf::Vector2f (16, 0));
-	smallInvertedTriangle.setPoint(2, sf::Vector2f (8, 12));
-	smallInvertedTriangle.setPosition(295, 144);
-	smallInvertedTriangle.setFillColor(sf::Color::Black);
-	sf::Text resolutionText[screenSizes.size()];
-	for(unsigned int i=0; i<screenSizes.size(); i++){
-		resolutionText[i].setString(std::to_string(screenSizes[i].width) + " x " + std::to_string(screenSizes[i].height));
-		resolutionText[i].setFont(font);
-		resolutionText[i].setCharacterSize(20);
-	}
-
-
+	/////////////////////////////////////////////////////////START OF DISPLAY LOOP//////////////////////////////////////////////////////
 	while (window.isOpen()) {
 		sf::Event event;
 		while (window.pollEvent(event)) {
@@ -139,7 +175,6 @@ void windowStart() {
 					window.draw(myExitButton);
 					window.draw(myExitButtonShade);
 					window.draw(exitButtonText);
-					window.draw(yaBoiS);
 					window.draw(optionsButton);
 					window.draw(optionsButtonText);
 					window.display();
@@ -154,7 +189,6 @@ void windowStart() {
 					window.clear();
 					window.draw(myExitButton);
 					window.draw(exitButtonText);
-					window.draw(yaBoiS);
 					window.draw(optionsButton);
 					window.draw(optionsButtonShade);
 					window.draw(optionsButtonText);
@@ -172,7 +206,6 @@ void windowStart() {
 			window.clear();
 			window.draw(myExitButton);
 			window.draw(exitButtonText);
-			window.draw(yaBoiS);
 			window.draw(optionsButton);
 			window.draw(optionsButtonText);
 
@@ -190,6 +223,8 @@ void windowStart() {
 			 * music/sound (new window?)
 			 * CONFIRMATION PROMPT FOR CERTAIN OPTIONS
 			 * visuals, would only know later on if needed (separate window)
+			 *
+			 * likely going to change this into a VIEW rather than a WINDOW (need to research more on this topic)
 			 */
 		case 1: {
 
@@ -203,6 +238,9 @@ void windowStart() {
 					window.draw(optionsBackButton);
 					window.draw(optionsBackButtonShade);
 					window.draw(optionsBackButtonText);
+					window.draw(resolutionBar);
+					window.draw(resolutionText);
+					window.draw(smallInvertedTriangle);
 
 					window.display();
 
@@ -218,9 +256,17 @@ void windowStart() {
 			window.clear();
 			window.draw(optionsBackButton);
 			window.draw(optionsBackButtonText);
+			window.draw(resolutionBar);
+			window.draw(resolutionText);
+			window.draw(smallInvertedTriangle);
 
 			break;
 		}
+		case 4: {
+
+			break;
+		}
+
 		case 5: {
 
 			break;
