@@ -7,8 +7,8 @@ void windowStart() {
 	std::vector<sf::VideoMode> screenSizes =
 			sf::VideoMode::getFullscreenModes();
 	sf::RenderWindow window(
-			sf::VideoMode(screenSizes[0].width, screenSizes[0].height, 32),
-			"Project A", sf::Style::Fullscreen);
+			sf::VideoMode(screenSizes[1].width, screenSizes[1].height, 32),
+			"Project A");
 	window.setFramerateLimit(60);
 
 	/*	Window variables:
@@ -32,6 +32,9 @@ void windowStart() {
 		std::cout << "Couldn't load the font file." << std::endl;
 		exit(1);
 	}
+
+	//dev "fun room" test map to get used to functions
+	sf::View testMap;
 
 	////////////////////////////////////////////////////////MAIN MENU COMPONENTS******************
 
@@ -74,16 +77,16 @@ void windowStart() {
 	//assets for dev button
 	sf::RectangleShape devButton(buttonSize);
 	devButton.setOrigin(buttonSize.x / 2, buttonSize.y / 2);
-	devButton.setPosition(window.getSize().x / 2, window.getSize().y - 190);
+	devButton.setPosition(window.getSize().x / 4 * 3, window.getSize().y - 190);
 	devButton.setFillColor(sf::Color(255, 255, 255, 128));
 	sf::RectangleShape devButtonShade(buttonShadeSize);
 	devButtonShade.setOrigin(buttonShadeSize.x / 2, buttonShadeSize.y / 2);
-	devButtonShade.setPosition(window.getSize().x / 2,
+	devButtonShade.setPosition(window.getSize().x / 4 * 3,
 			window.getSize().y - 190);
 	devButtonShade.setFillColor(sf::Color::Black);
 	sf::Text devButtonText("Fun Room", font, 30);
 	devButtonText.setOrigin(devButtonText.getLocalBounds().width / 2,
-			devButtonText.getLocalBounds().height / 2 + 6);
+			devButtonText.getLocalBounds().height / 2 + 7);
 	devButtonText.setPosition(window.getSize().x / 4 * 3,
 			window.getSize().y - 190);
 
@@ -177,6 +180,8 @@ void windowStart() {
 					window.draw(exitButtonText);
 					window.draw(optionsButton);
 					window.draw(optionsButtonText);
+					window.draw(devButton);
+					window.draw(devButtonText);
 					window.display();
 					mousePos = window.mapPixelToCoords(
 							sf::Mouse::getPosition(window));
@@ -192,12 +197,33 @@ void windowStart() {
 					window.draw(optionsButton);
 					window.draw(optionsButtonShade);
 					window.draw(optionsButtonText);
+					window.draw(devButton);
+					window.draw(devButtonText);
 					window.display();
 					mousePos = window.mapPixelToCoords(
 							sf::Mouse::getPosition(window));
 					window.pollEvent(event);
 					if (event.type == sf::Event::MouseButtonReleased) {
 						currentWindow = 1;
+						break;
+					}
+				}
+				//dev button held down
+				while (devButton.getGlobalBounds().contains(mousePos)) {
+					window.clear();
+					window.draw(myExitButton);
+					window.draw(exitButtonText);
+					window.draw(optionsButton);
+					window.draw(optionsButtonText);
+					window.draw(devButton);
+					window.draw(devButtonShade);
+					window.draw(devButtonText);
+					window.display();
+					mousePos = window.mapPixelToCoords(
+							sf::Mouse::getPosition(window));
+					window.pollEvent(event);
+					if (event.type == sf::Event::MouseButtonReleased) {
+						currentWindow = 4;
 						break;
 					}
 				}
@@ -208,6 +234,8 @@ void windowStart() {
 			window.draw(exitButtonText);
 			window.draw(optionsButton);
 			window.draw(optionsButtonText);
+			window.draw(devButton);
+			window.draw(devButtonText);
 
 			break;
 		}
@@ -264,6 +292,7 @@ void windowStart() {
 		}
 		case 4: {
 
+			std::cout << "i made it!" << std::endl;
 			break;
 		}
 
